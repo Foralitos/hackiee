@@ -6,6 +6,9 @@ import VotosTable from "@/components/molecules/VotosTable";
 import TotalesPanel from "@/components/molecules/TotalesPanel";
 import ValidacionesList from "@/components/molecules/ValidacionesList";
 import ActaActions from "@/components/molecules/ActaActions";
+import DecisionBanner from "@/components/molecules/DecisionBanner";
+
+const FINAL_STATES = new Set(["validada", "corregida", "devuelta"]);
 
 function SectionHeading({ number, title }) {
   return (
@@ -26,7 +29,11 @@ function Divider() {
   );
 }
 
-export default function ActaResultView({ acta }) {
+export default function ActaResultView({
+  acta,
+  onActaUpdated,
+  readOnly = false,
+}) {
   if (!acta) return null;
 
   const cola = acta.clasificacion?.cola || "amarilla";
@@ -37,6 +44,7 @@ export default function ActaResultView({ acta }) {
   const sumaCheck =
     (acta.validacion?.checks || []).find((c) => c.regla === "suma_votos") ||
     null;
+  const decidida = FINAL_STATES.has(acta.estado);
 
   return (
     <article
@@ -145,9 +153,21 @@ export default function ActaResultView({ acta }) {
         </div>
       </div>
 
-      {/* ACTIONS */}
+      {/* ACTIONS o BANNER de decisión */}
       <div className="border-t border-stone-300 dark:border-stone-700 pt-6">
-        <ActaActions />
+        {decidida ? (
+          <DecisionBanner acta={acta} />
+        ) : readOnly ? (
+          <p className="text-sm text-stone-500 italic">
+            Acta pendiente de decisión.
+          </p>
+        ) : (
+          <ActaActions
+            actaId={acta.id || acta._id}
+            estado={acta.estado}
+            onDecided={onActaUpdated}
+          />
+        )}
       </div>
     </article>
   );

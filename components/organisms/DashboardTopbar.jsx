@@ -6,11 +6,18 @@ import IconButton from "@/components/atoms/IconButton";
 
 const TITLES = {
   "/dashboard": "Inicio",
+  "/dashboard/actas": "Bandeja",
   "/dashboard/actas/upload": "Procesar acta",
 };
 
+function isActaDetail(pathname) {
+  // /dashboard/actas/<24-hex objectid>
+  return /^\/dashboard\/actas\/[0-9a-f]{24}$/.test(pathname);
+}
+
 function titleFor(pathname) {
   if (TITLES[pathname]) return TITLES[pathname];
+  if (isActaDetail(pathname)) return "Detalle de acta";
   // Fallback: longest matching prefix
   const match = Object.keys(TITLES)
     .filter((k) => pathname.startsWith(k))

@@ -11,6 +11,62 @@ import Casilla from "@/models/Casilla";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const VALID_COLAS = new Set(["verde", "amarilla", "roja"]);
+const VALID_ESTADOS = new Set([
+  "pendiente",
+  "en_revision",
+  "validada",
+  "corregida",
+  "devuelta",
+]);
+const FINAL_ESTADOS = ["validada", "corregida", "devuelta"];
+
+export async function GET(request) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const params = request.nextUrl.searchParams;
+  const cola = params.get("cola");
+  const estado = params.get("estado");
+  const limit = Math.min(parseInt(params.get("limit") || "50", 10) || 50, 100);
+  const skip = parseInt(params.get("skip") || "0", 10) || 0;
+
+  const query = {};
+  if (cola && VALID_COLAS.has(cola)) query["clasificacion.cola"] = cola;
+  if (estado && VALID_ESTADOS.has(estado)) {
+    query.estado = estado;
+  } else {
+    // Default: historial puro (solo actas decididas).
+    query.estado = { $in: FINAL_ESTADOS };
+  }
+
+  await connectMongo();
+
+  const [actas, total] = await Promise.all([
+    Acta.find(query)
+      .select(
+        "clasificacion estado createdAt updatedAt extraccion.identificacion decisiones casilla"
+      )
+      .populate("decisiones.operador", "name image")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean({ virtuals: true }),
+    Acta.countDocuments(query),
+  ]);
+
+  // lean() with virtuals still leaves _id; normalize to id for the client.
+  const cleaned = actas.map((a) => ({
+    ...a,
+    id: a._id?.toString(),
+    _id: undefined,
+  }));
+
+  return NextResponse.json({ actas: cleaned, total });
+}
+
 export async function POST(request) {
   const session = await auth();
   if (!session?.user) {

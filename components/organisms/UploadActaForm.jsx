@@ -102,7 +102,9 @@ export default function UploadActaForm() {
       )}
 
       {loading && <ActaResultSkeleton />}
-      {!loading && result && <ActaResultView acta={result} />}
+      {!loading && result && (
+        <ActaResultView acta={result} onActaUpdated={setResult} />
+      )}
     </div>
   );
 }

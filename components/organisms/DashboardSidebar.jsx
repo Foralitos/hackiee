@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { House, FileScan, X } from "lucide-react";
+import { House, FileScan, Inbox, X } from "lucide-react";
 import config from "@/config";
 import NavLink from "@/components/atoms/NavLink";
 import IconButton from "@/components/atoms/IconButton";
@@ -14,6 +14,7 @@ const NAV = [
     items: [
       { href: "/dashboard", label: "Inicio", icon: House },
       { href: "/dashboard/actas/upload", label: "Procesar acta", icon: FileScan },
+      { href: "/dashboard/actas", label: "Bandeja", icon: Inbox },
     ],
   },
 ];
