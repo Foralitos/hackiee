@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 import ColaBadge from "@/components/atoms/ColaBadge";
 import EstadoBadge from "@/components/atoms/EstadoBadge";
 import Avatar from "@/components/atoms/Avatar";
@@ -49,9 +50,14 @@ export default function ActaListItem({ acta }) {
     .filter(Boolean)
     .join(" · ") || "Sin identificación";
 
+  const esperandoVerif = acta.estado === "esperando_verificacion";
+  const href = esperandoVerif
+    ? `/dashboard/actas/${id}/verificar`
+    : `/dashboard/actas/${id}`;
+
   return (
     <Link
-      href={`/dashboard/actas/${id}`}
+      href={href}
       className="group block border border-stone-200/70 dark:border-stone-800/70 hover:border-stone-400 dark:hover:border-stone-600 hover:bg-stone-50/60 dark:hover:bg-stone-900/40 transition-colors"
     >
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4">
@@ -77,8 +83,14 @@ export default function ActaListItem({ acta }) {
           </div>
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 flex items-center gap-2">
           <EstadoBadge estado={acta.estado} />
+          {esperandoVerif && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400">
+              <ShieldCheck size={12} strokeWidth={2.25} />
+              Verificar →
+            </span>
+          )}
         </div>
       </div>
     </Link>

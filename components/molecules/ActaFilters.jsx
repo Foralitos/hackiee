@@ -7,6 +7,8 @@ const ESTADOS = [
   { value: "validada", label: "Validadas" },
   { value: "corregida", label: "Corregidas" },
   { value: "devuelta", label: "Devueltas" },
+  { value: "esperando_verificacion", label: "Por verificar" },
+  { value: "discrepancia", label: "Discrepancias" },
 ];
 
 const COLAS = [

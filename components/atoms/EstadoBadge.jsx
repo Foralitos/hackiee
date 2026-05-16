@@ -1,4 +1,12 @@
-import { Clock, CheckCircle2, Pencil, RotateCcw, Eye } from "lucide-react";
+import {
+  Clock,
+  CheckCircle2,
+  Pencil,
+  RotateCcw,
+  Eye,
+  ShieldCheck,
+  ShieldAlert,
+} from "lucide-react";
 
 const STATES = {
   pendiente: {
@@ -14,6 +22,20 @@ const STATES = {
     text: "text-stone-600 dark:text-stone-400",
     border: "border-stone-300 dark:border-stone-700",
     bg: "bg-stone-100/70 dark:bg-stone-900/40",
+  },
+  esperando_verificacion: {
+    Icon: ShieldCheck,
+    label: "Por verificar",
+    text: "text-amber-700 dark:text-amber-400",
+    border: "border-amber-700/30 dark:border-amber-500/30",
+    bg: "bg-amber-50/70 dark:bg-amber-950/20",
+  },
+  discrepancia: {
+    Icon: ShieldAlert,
+    label: "Discrepancia",
+    text: "text-red-700 dark:text-red-400",
+    border: "border-red-700/30 dark:border-red-500/30",
+    bg: "bg-red-50/70 dark:bg-red-950/20",
   },
   validada: {
     Icon: CheckCircle2,

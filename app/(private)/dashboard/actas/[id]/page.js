@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import connectMongo from "@/lib/mongoose";
+import toPlain from "@/lib/toPlain";
 import Acta from "@/models/Acta";
 import PageShell from "@/components/templates/PageShell";
 import ActaResultView from "@/components/organisms/ActaResultView";
@@ -20,8 +21,10 @@ export default async function ActaDetailPage({ params }) {
   );
   if (!acta) notFound();
 
-  // Mongoose document → plain JSON for the client component.
-  const data = acta.toJSON();
+  // Mongoose document → fully plain JSON for the client component.
+  // toJSON() alone leaves ObjectIds in subdocuments; toPlain serializes the
+  // whole tree.
+  const data = toPlain(acta);
 
   return (
     <PageShell>

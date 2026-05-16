@@ -1,10 +1,10 @@
 const config = {
-  appName: "hackiee",
+  appName: "PREP Copilot",
   appDescription:
-    "Next.js 16 boilerplate with NextAuth + MongoDB + atomic components",
+    "Asistencia computacional con control humano para el Programa de Resultados Electorales Preliminares del IEE Chihuahua.",
   domainName: "localhost:3000",
   auth: {
-    loginUrl: "/api/auth/signin",
+    loginUrl: "/signin",
     callbackUrl: "/dashboard",
   },
 };

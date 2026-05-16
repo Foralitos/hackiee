@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Upload, AlertCircle } from "lucide-react";
 import Button from "@/components/atoms/Button";
+import CasillaAutocomplete from "@/components/molecules/CasillaAutocomplete";
 import ActaResultView from "@/components/organisms/ActaResultView";
 import ActaResultSkeleton from "@/components/organisms/ActaResultSkeleton";
 
@@ -62,18 +63,12 @@ export default function UploadActaForm() {
           )}
         </label>
 
-        <label className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-stone-500">
-            Casilla ID <span className="normal-case tracking-normal text-stone-400">(opcional)</span>
+            Casilla <span className="normal-case tracking-normal text-stone-400">(opcional, habilita cross-check)</span>
           </span>
-          <input
-            type="text"
-            value={casillaId}
-            onChange={(e) => setCasillaId(e.target.value)}
-            placeholder="ObjectId de la casilla — para cross-check con lista nominal"
-            className="text-sm border border-stone-300 dark:border-stone-700 px-3 py-2 bg-transparent font-mono focus:outline-none focus:border-foreground"
-          />
-        </label>
+          <CasillaAutocomplete value={casillaId} onChange={setCasillaId} />
+        </div>
 
         <div>
           <Button type="submit" disabled={!file || loading}>

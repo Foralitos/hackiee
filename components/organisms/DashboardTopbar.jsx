@@ -8,6 +8,8 @@ const TITLES = {
   "/dashboard": "Inicio",
   "/dashboard/actas": "Bandeja",
   "/dashboard/actas/upload": "Procesar acta",
+  "/dashboard/casillas": "Casillas",
+  "/dashboard/supervisor": "Supervisor",
 };
 
 function isActaDetail(pathname) {
@@ -15,8 +17,13 @@ function isActaDetail(pathname) {
   return /^\/dashboard\/actas\/[0-9a-f]{24}$/.test(pathname);
 }
 
+function isActaVerificar(pathname) {
+  return /^\/dashboard\/actas\/[0-9a-f]{24}\/verificar$/.test(pathname);
+}
+
 function titleFor(pathname) {
   if (TITLES[pathname]) return TITLES[pathname];
+  if (isActaVerificar(pathname)) return "Verificar acta";
   if (isActaDetail(pathname)) return "Detalle de acta";
   // Fallback: longest matching prefix
   const match = Object.keys(TITLES)

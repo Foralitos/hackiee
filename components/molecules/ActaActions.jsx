@@ -29,7 +29,12 @@ function ActionBtn({ icon: Icon, label, variant = "default", onClick, disabled }
 
 const FINAL_STATES = new Set(["validada", "corregida", "devuelta"]);
 
-export default function ActaActions({ actaId, estado, onDecided }) {
+export default function ActaActions({
+  actaId,
+  estado,
+  onDecided,
+  onStartCorreccion,
+}) {
   const [activeAction, setActiveAction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -70,7 +75,13 @@ export default function ActaActions({ actaId, estado, onDecided }) {
         <ActionBtn
           icon={Pencil}
           label="Corregir"
-          onClick={() => setActiveAction("corregir")}
+          onClick={() => {
+            if (onStartCorreccion) {
+              onStartCorreccion();
+            } else {
+              setActiveAction("corregir");
+            }
+          }}
           disabled={loading || activeAction !== null}
         />
         <ActionBtn

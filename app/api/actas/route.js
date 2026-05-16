@@ -15,11 +15,21 @@ const VALID_COLAS = new Set(["verde", "amarilla", "roja"]);
 const VALID_ESTADOS = new Set([
   "pendiente",
   "en_revision",
+  "esperando_verificacion",
+  "discrepancia",
   "validada",
   "corregida",
   "devuelta",
 ]);
-const FINAL_ESTADOS = ["validada", "corregida", "devuelta"];
+// "Decididas o en proceso de revisión" — todo lo que aparece en la bandeja
+// por default. Las pendientes (recién subidas, sin tocar) quedan fuera.
+const FINAL_ESTADOS = [
+  "validada",
+  "corregida",
+  "devuelta",
+  "esperando_verificacion",
+  "discrepancia",
+];
 
 export async function GET(request) {
   const session = await auth();

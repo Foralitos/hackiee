@@ -47,7 +47,15 @@ const actaSchema = mongoose.Schema(
 
     estado: {
       type: String,
-      enum: ["pendiente", "en_revision", "validada", "corregida", "devuelta"],
+      enum: [
+        "pendiente",
+        "en_revision",
+        "esperando_verificacion",
+        "discrepancia",
+        "validada",
+        "corregida",
+        "devuelta",
+      ],
       default: "pendiente",
     },
 

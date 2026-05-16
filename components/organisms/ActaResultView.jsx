@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Eye } from "lucide-react";
 import ColaBadge from "@/components/atoms/ColaBadge";
 import ActaIdentificacion from "@/components/molecules/ActaIdentificacion";
@@ -7,6 +10,7 @@ import TotalesPanel from "@/components/molecules/TotalesPanel";
 import ValidacionesList from "@/components/molecules/ValidacionesList";
 import ActaActions from "@/components/molecules/ActaActions";
 import DecisionBanner from "@/components/molecules/DecisionBanner";
+import ActaCorrectionView from "@/components/organisms/ActaCorrectionView";
 
 const FINAL_STATES = new Set(["validada", "corregida", "devuelta"]);
 
@@ -34,7 +38,22 @@ export default function ActaResultView({
   onActaUpdated,
   readOnly = false,
 }) {
+  const [mode, setMode] = useState("view");
+
   if (!acta) return null;
+
+  if (mode === "edit" && !readOnly) {
+    return (
+      <ActaCorrectionView
+        acta={acta}
+        onCancel={() => setMode("view")}
+        onSaved={(updated) => {
+          onActaUpdated?.(updated);
+          setMode("view");
+        }}
+      />
+    );
+  }
 
   const cola = acta.clasificacion?.cola || "amarilla";
   const motivo = acta.clasificacion?.motivo;
@@ -166,6 +185,7 @@ export default function ActaResultView({
             actaId={acta.id || acta._id}
             estado={acta.estado}
             onDecided={onActaUpdated}
+            onStartCorreccion={() => setMode("edit")}
           />
         )}
       </div>
